@@ -1,0 +1,138 @@
+@mixin grid($type, $segments: null, $modifierList...) {
+
+  // variables
+  $segmentWidth: 8.333333333333333%; // (100 / 12)
+
+  // grid row
+  @if $type == "row" {
+
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    justify-content: space-around;
+
+    // MODIFIERS
+    @each $modifier in $modifierList {
+
+      @if $modifier == "align-center" {
+        // flexbox items that do not fill a row will be center aligned.
+        justify-content: center;
+
+        .flex-column {
+          margin-right: 0;
+        }
+      }
+
+      @if $modifier == "align-left" {
+        // flexbox items that do not fill a row will be left aligned.
+        justify-content: flex-start; 
+
+        .flex-column {
+          margin-right: 0;
+        }
+      }
+
+      @if $modifier == "align-right" { 
+        // flexbox items that do not fill a row will be right aligned.
+        justify-content: flex-end; 
+
+        .flex-column {
+          margin-right: 0;
+        }
+      }
+
+      @if $modifier == "align-top" {
+        // flexbox items will be vertically aligned top instead of matching height.
+        align-items: flex-start;
+      }
+
+      @if $modifier == "align-middle" {
+        // flexbox items will be vertically aligned middle instead of matching height.
+        align-items: center;
+      }
+
+      @if $modifier == "align-end" {
+        // flexbox items will be vertically aligned bottom instead of matching height.
+        align-items: flex-end;
+      }
+
+      @if $modifier == "no-wrap" {
+        // flexbox items will not wrap when their container becomes too small to contain them.
+        flex-wrap: nowrap;
+      }
+
+    }
+
+  // grid column
+  } @else if $type == "column" {
+
+    position: relative; 
+    margin-right: auto; // align flexbox items to the left after they wrap
+
+    @if $segments == "auto" {
+
+      flex: initial; 
+      -webkit-flex: initial;	
+      min-width: 0; 
+      max-width: none; 
+      flex-basis: auto;
+      -webkit-flex-basis: auto;
+
+    } @else {
+
+      flex: 1; 
+      -webkit-flex: 1;
+
+      @if $segments == 12 {
+
+        min-width: 100%; 	
+        max-width: 100%; 	
+        flex-basis: 100%; 		
+        -webkit-flex-basis: 100%;
+
+      } @else {
+
+        min-width: $segmentWidth * $segments; 	
+        max-width: $segmentWidth * $segments; 	
+        flex-basis: $segmentWidth * $segments; 		
+        -webkit-flex-basis: $segmentWidth * $segments;
+
+      }	
+      	
+    }
+
+    // MODIFIERS
+    @each $modifier in $modifierList {
+
+      @if $modifier == "align-bottom" {
+        // flexbox items will align to the bottom of a row in the case that they are not matching height.
+        align-self: flex-end;
+      }
+
+      @if $modifier == "align-center" {
+        // flexbox items that do not fill a row will be center aligned.
+        margin-right: 0;
+      }
+
+       @if $modifier == "align-middle" {
+        // flexbox items will align to the bottom of a row in the case that they are not matching height.
+        align-self: center;
+      }
+
+      @if $modifier == "align-left" {
+        // flexbox items that do not fill a row will be left aligned.
+        margin-right: 0;
+      }
+
+      @if $modifier == "no-shrink" {
+        // flexbox items will not shrink when their container becomes too small to contain them.
+        flex-shrink: 0;
+      }
+
+    }
+
+  }
+
+}

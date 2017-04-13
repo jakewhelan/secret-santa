@@ -1,0 +1,15 @@
+@mixin breakpoint($name) {
+
+  @if $name == "medium" {
+    @media (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
+      @content;
+    }
+  }
+
+  @else if $name == "large" {
+    @media (min-width: $breakpoint-large) {
+      @content;
+    }
+  }
+
+}

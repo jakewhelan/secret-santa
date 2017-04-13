@@ -1,0 +1,25 @@
+@import "~assets/scss/_common";
+
+header {
+  @include grid(row);
+  background: $brand-black;
+  height: 50px;
+}
+
+.container {
+  @include grid(column, 12);
+  @include grid(row, align-middle);
+}
+
+.brand {
+  @include grid(column, 12, align-middle);
+  @include grid(row, align-middle);
+  display: block;
+  color: $brand-white;
+  text-decoration: none;
+}
+
+.brand__heading {
+  @include grid(column, 12, align-middle);
+  margin-bottom: 0;
+}

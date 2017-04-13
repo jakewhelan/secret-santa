@@ -1,0 +1,81 @@
+html {
+  box-sizing: border-box; 
+  min-width: 320px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-size: 16px;
+  line-height: 20px; 
+  font-family: $brand-font; 
+  color: $brand-black; 
+}
+
+*:focus, *:hover {
+  outline: none; 
+}
+
+h1 {
+  display: none; // reserved for SEO
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: $font-regular;
+  font-family: $brand-font;
+  font-size: 32px;
+  line-height: 36px;
+}
+
+h3 { 
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: $font-regular; 
+  font-family: $brand-font; 
+  font-size: 28px;
+  line-height: 32px;
+}
+
+h4 { 
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: $font-regular; 
+  font-family: $brand-font; 
+  font-size: 24px;
+  line-height: 28px;
+}
+
+h5 { 
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: $font-regular; 
+  font-family: $brand-font; 
+  font-size: 20px;
+  line-height: 24px;
+}
+
+h6 { 
+ margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: $font-regular; 
+  font-family: $brand-font; 
+  font-size: 16px;
+  line-height: 20px;
+}
+
+p { 
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-weight: $font-regular; 
+  font-family: $brand-font; 
+  font-size: 16px;
+  line-height: 24px;
+}
+
+p:last-child { 
+  margin-bottom: 0;
+}

@@ -6,7 +6,8 @@ var port = 3000;
 app.set("port", port);
 
 app.get("/api/users/", function(request, response) {
-  fs.readFile('./data/usersw.json', 'utf8', function (error, data) {
+  console.log("ITS HAPPENING")
+  fs.readFile('./data/users.json', 'utf8', function (error, data) {
     if(error) {
       return console.error("Error reading file: " + error);
     }

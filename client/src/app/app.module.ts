@@ -1,9 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
-import { AppRoutingModule } from './app-routing.module';
+// routing module
+import { AppRoutingModule } from './app.routes';
+
+// root modules
+import { SharedModule } from './shared/shared.module';
+import { LayoutModule } from './layout/layout.module';
+import { ListModule } from './list/list.module';
+
+// components
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -12,9 +18,10 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LayoutModule,
+    SharedModule,
+    ListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

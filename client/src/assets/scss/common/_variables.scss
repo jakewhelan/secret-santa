@@ -1,0 +1,29 @@
+// breakpoints
+$breakpoint-small: 320px;
+$breakpoint-medium: 768px;
+$breakpoint-large: 1024px;
+
+// app-width, used for container element
+$app-width: 1250px;
+
+// font
+$brand-font: Arial, Helvetica Neue, Helvetica, sans-serif;
+$font-regular: 400;
+$font-heavy: 700;  
+
+// brand colours
+$brand-black: #000000;
+$brand-white: #FFFFFF;
+$brand-grey: lightgrey;
+$brand-silver: silver;
+$brand-gold: gold;
+$brand-blue: blue;
+$brand-pink: pink;
+$brand-green: green;
+$brand-red: red;
+
+// borders
+$border: 1px solid $brand-black;
+$border--thick: 2px solid $brand-black;
+$border--dot: 2px dotted $brand-black;
+$border-radius: 4px;

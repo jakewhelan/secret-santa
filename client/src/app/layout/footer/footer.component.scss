@@ -1,0 +1,21 @@
+@import "~assets/scss/_common";
+
+footer {
+  @include grid(row);
+  background: $brand-black;
+  height: 50px;
+}
+
+.container {
+  @include grid(column, 12);
+  @include grid(row, align-middle);
+}
+
+.brand {
+  @include grid(column, 12, align-middle);
+  color: $brand-white;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: right;
+  margin-bottom: 0;
+}
