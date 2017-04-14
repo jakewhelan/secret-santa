@@ -1,3 +1,10 @@
-<p>
-  list works!
-</p>
+<div class="container">
+  <div *ngFor="let user of assignments">
+    <div>{{user.name.first}} {{user.name.last}}</div>
+    <div>{{user.email}}</div>
+    <div>{{user.phone}}</div>
+    --------------------------
+    <div>Assigned to: {{user.assignment.name.first}} {{user.assignment.name.last}}</div>
+    --------------------------
+  </div>
+</div>
