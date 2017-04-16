@@ -5,4 +5,5 @@ export class User {
   guid: string;
   name: Name;
   phone: string;
+  assignment: User;
 }

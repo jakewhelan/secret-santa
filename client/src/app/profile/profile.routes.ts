@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // components
-import { ListComponent } from './list.component';
+import { ProfileComponent } from './profile.component';
 
 const routes: Routes = [
   { 
-    path: '', component: ListComponent, 
+    path: '', component: ProfileComponent, 
     data: { title: 'Secret Santa | Gilt Groupe' } 
   }
 ];
@@ -16,4 +16,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class ListRoutingModule { }
+export class ProfileRoutingModule { }
