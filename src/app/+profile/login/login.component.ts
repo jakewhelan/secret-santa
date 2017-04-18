@@ -23,20 +23,48 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  getCachedIndividualUserWithAssignment(): void {
-    this.userService.getCachedIndividualUserWithAssignment(this.name)
+  /*
+   *  @method getUserWithAssignment
+   *
+   *  Subscribe to Observable<User[]>
+   *  from UserService. Attempt to 
+   *  retrieve unique User using 
+   *  query string[] retrieved from
+   *  route params.
+   *
+   *  If more than 1 result is returned
+   *  provided user argument is not
+   *  unique.
+   *
+   *  Assign User to this.user.
+   */
+  getUserWithAssignment(): void {
+    this.userService.getUserWithAssignment(this.name)
       .first()
       .subscribe(users => {
         if(users.length != 1) {
-          console.error('ProfileComponent: (getCachedUserWithAssignment) no exact match found for User')
+          console.error('ProfileComponent: (getUserWithAssignment) no exact match found for User')
           this.router.navigateByUrl('/');
         } else {
-          console.info('ProfileComponent: (getCachedUserWithAssignment) exact match found for User')
+          console.info('ProfileComponent: (getUserWithAssignment) exact match found for User')
           this.user = users[0];
+          if(sessionStorage.getItem("gilt.secret-santa.UserService." + this.user.guid + ".auth") == "true") {
+            this.login();
+          }
         }
       });
   }
 
+  /*
+   *  @method getRouteParams
+   *
+   *  Subscribe to params from
+   *  Router.
+   *
+   *  Assign string[] for later use
+   *  as argument for filtering. Assign 
+   *  string for later use in routing.
+   */
   getRouteParams(): void {
     this.route.params
       .first()
@@ -46,6 +74,18 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  /*
+   *  @method onFormSubmit
+   *
+   *  Event handlers for login form
+   *  submission. Request authorisation
+   *  from userService.
+   *
+   *  If successful login, UserService
+   *  will create and cache auth token in
+   *  localSession. If unsuccessful 
+   *  display error message.
+   */
   onFormSubmit(form: any): void {
     let authorisation = this.userService.authUser(this.user, form);
     if(authorisation) {
@@ -56,16 +96,18 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  /* 
+   *  @method login
+   *
+   *  Route authorised user to dashboard.
+   */
   login() {
     this.router.navigate(['profile', this.param, 'dashboard']); 
   }
 
   ngOnInit() {
     this.getRouteParams();
-    this.getCachedIndividualUserWithAssignment();
-    if(sessionStorage.getItem("gilt.secret-santa.UserService." + this.user.guid + ".auth") == "true") {
-      this.login();
-    }
+    this.getUserWithAssignment();
   }
 
 }

@@ -23,34 +23,54 @@ export class ListComponent implements OnInit {
   ) {}
 
   /*
-   *  @method getUsers
+   *  @method getUsersWithAssignment
    *
    *  Subscribe to Observable<User[]>
-   *  from ListService.
+   *  from ListService. Filter returned
+   *  User[] with string[] retrieved
+   *  from component input element.
    *
-   *  Assign User[] to this.users
+   *  Assign User[] to this.users &
+   *  this.filteredUsers.
+   *
+   *  View will render using
+   *  this.filteredUsers.
    */
-  getCachedUsersWithAssignment(): void {
-    this.userService.getCachedUsersWithAssignment()
+  getUsersWithAssignment(): void {
+    this.userService.getUsersWithAssignment()
       .map(users => this.filterUsersByName(users))
       .first()
       .subscribe(users => {
+        console.log(users);
         this.users = users
         this.filteredUsers = users;
       });
   }
 
+  /*
+   *  @method applySearchTerms
+   *
+   *  Simple interface for 
+   *  this.filterUsersByName.
+   */
   applySearchTerms(): void {
     this.filteredUsers = this.filterUsersByName(this.users);
   }
 
+  /*
+   *  @method filterUsersByName
+   *
+   *  Filter users using string[]
+   *  retrieved from component input
+   *  element.
+   */
   filterUsersByName(users: User[]): User[] {
     return this.userService
       .filterUsersByName(users, this.searchTerms.split(" "), "AND");
   }
 
   ngOnInit() {
-    this.getCachedUsersWithAssignment();
+    this.getUsersWithAssignment();
   }
 
 }

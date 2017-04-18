@@ -1,0 +1,33 @@
+@import "./assets/scss/main.scss";
+
+.container {
+  max-width: $app-width !important;
+  min-width: 0 !important;
+  margin: 0 auto;
+}
+
+.loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: black;
+}
+
+.router-wrapper {
+  flex: 1;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fade-in {
+  animation: fade-in .4s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}

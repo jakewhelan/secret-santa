@@ -18,11 +18,6 @@ import { Name } from '../../models/name.model';
 @Injectable()
 export class UserService {
 
-  private users: any[] = null;
-  private typeCastUsers: User[] = null;
-  private usersWithAssignment: User[] = null;
-  private selectedUser: User = null;
-
   constructor(
     private http: Http,
   ) {}
@@ -31,26 +26,32 @@ export class UserService {
    *  @method getUsers
    *
    *  Get users any[] from REST
-   *  API or local service cache.
+   *  API or localStorage cache.
    *
    *  If retrieved from REST API cache
-   *  as this.users.
+   *  any[] in localStorage.
+   *
+   *  Return any[] as Observable<any[]>.
    */
   getUsers(forceHttpGet?: boolean): Observable<any[]> {
     const endpoint = "http://localhost:3000/api/users/";
-    this.users = this.users || JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.users"));
-    if(this.users && !forceHttpGet) {
+    let users = JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.users"));
+    if(users && !forceHttpGet) {
       console.info("UserService: (getUsersWithAssignment) getting cached any[]")
-      return Observable.of(this.users);
+      return Observable.of(users);
     } else {
-      console.info("UserService: (getUsers) get -> " + endpoint);
+      console.info("UserService: (getUsers) GET -> " + endpoint);
       return this.http
         .get(endpoint)
         .map(response => {
-          let users = response.json().users;
-          this.users = users;
-          localStorage.setItem("gilt.secret-santa.UserService.users", JSON.stringify(users));
-          return users;
+          let users = response.json().users || [];
+          if(users.length == 0) {
+            console.error("UserService: (assignUsers) provided any[] has no elements");
+            return [];
+          } else {
+            localStorage.setItem("gilt.secret-santa.UserService.users", JSON.stringify(users));
+            return users;
+          }
         })
         .catch(error => {
           console.error(error);
@@ -63,15 +64,20 @@ export class UserService {
    *  @method castUsers
    *
    *  Type cast JSON data any[] to
-   *  typescript Class: User[].
-   *
-   *  Cache User[] as this.typeCastUsers 
    *  User[].
    *
-   *  Returns any[] type cast to User[]
-   *  as Observable<User[]>.
+   *  Clone User[] to prevent circular
+   *  Object references. Type cast
+   *  any[] 2 levels deep to support
+   *  user.assignment: Object & 
+   *  user.assignment.name: Object.
+   *  Build new array of type cast User
+   *  elements.
+   *
+   *  Return User[] as Observable<User[]>.
    */
   castUsers(users: any[]): Observable<User[]> {
+    users = JSON.parse(JSON.stringify(users));
     let typeCastUsers: User[] = [];
     users.map(user => {
       let u: User = new User();
@@ -89,7 +95,6 @@ export class UserService {
       Object.assign(u, user);
       typeCastUsers.push(u);
     });
-    this.typeCastUsers = typeCastUsers;
     return Observable.of(typeCastUsers);
   }
 
@@ -103,7 +108,7 @@ export class UserService {
    *  select a random element and swap 
    *  it with the current element.
    *
-   *  Returns shuffled User[] as
+   *  Return shuffled User[] as
    *  Observable<User[]>.
    */ 
   shuffleUsers(users: User[]): Observable<User[]> {
@@ -122,7 +127,7 @@ export class UserService {
    *
    *  Assign each user/santa with a recipient.
    *
-   *  Elements are assigned to their neighbouring 
+   *  Assign each element to their neighbouring 
    *  element in shuffled user[] to prevent 
    *  self-assignment & mutual assignment.
    *
@@ -130,35 +135,41 @@ export class UserService {
    *  this operation, the assignment will always
    *  be different.
    *
-   *  Returns User[] with assignments as Observable<User[]>.
+   *  Return User[] with assignments as 
+   *  Observable<User[]>.
    */
   assignUsers(users: User[]): Observable<User[]> {
     let usersWithAssignment: User[];
 
-    // clone and type cast object to prevent circular references
-    this.castUsers(JSON.parse(JSON.stringify(users)))
+    this.castUsers(users)
       .first()
       .subscribe(users => usersWithAssignment = users);
 
     users.map(
       (user, index) => usersWithAssignment[index].assignment = (index != users.length - 1) ? users[index + 1] : users[0]
     );
-
-    this.usersWithAssignment = usersWithAssignment;
-    localStorage.setItem("gilt.secret-santa.UserService.usersWithAssignment", JSON.stringify(usersWithAssignment));
-    return Observable.of(usersWithAssignment);
+    if(users.length == 0) {
+      console.error("UserService: (assignUsers) provided any[] has no elements");
+      return Observable.of([]);
+    } else {
+      localStorage.setItem("gilt.secret-santa.UserService.usersWithAssignment", JSON.stringify(usersWithAssignment));
+      return Observable.of(usersWithAssignment);
+    }
   }
 
   /*
-   *  @method getUsersWithAssignment
+   *  @method getNewUsersWithAssignment
    *
-   *  1. Get user data from cache or REST api.
-   *  2. Type cast data to User[].
+   *  1. Get any[] from cache or REST api.
+   *  2. Type cast any[] to User[].
    *  3. Shuffle User[].
    *  4. Assign a User to each User, secret santa
    *     recipient.
+   *
+   *  Return User[] with assignments as
+   *  Observable<User[]>
    */
-  getUsersWithAssignment(): Observable<User[]> {  
+  getNewUsersWithAssignment(): Observable<User[]> {  
       return this.getUsers()
         .flatMap(users => this.castUsers(users))
         .flatMap(users => this.shuffleUsers(users))
@@ -166,46 +177,77 @@ export class UserService {
   }
 
   /*
-   *  @method getCachedUsersWithAssignment
+   *  @method getUsersWithAssignment
    *
-   *  Returns users with secret santa 
-   *  assignments from local service cache.
+   *  Get User[] with assignments from
+   *  localStorage cache.
+   *
+   *  If User[] not available from
+   *  localStorage cache get new User[]
+   *  from this.getNewUsersWithAssignment().
+   *
+   *  Return as Observable<User[]>.
    */
-  getCachedUsersWithAssignment(): Observable<User[]> {
-    let _localStorage = {
-      usersWithAssignment: JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.usersWithAssignment"))
-    }
-    if(_localStorage.usersWithAssignment) {
-      console.log("localstorage?");
-      console.info("UserService: (getCachedUsersWithAssignment) cached JSON data found in localStorage");
-      this.castUsers(JSON.parse(JSON.stringify(_localStorage.usersWithAssignment)))
+  getUsersWithAssignment(): Observable<User[]> {
+    let usersWithAssignment = JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.usersWithAssignment"));
+    if(usersWithAssignment) {
+      console.info("UserService: (getUsersWithAssignment) cached JSON data found in localStorage");
+      console.info("UserService: (getUsersWithAssignment) getting cached User[]");
+      this.castUsers(usersWithAssignment)
         .first()
-        .subscribe(users => this.usersWithAssignment = users);
-    }
-    if(this.usersWithAssignment) {
-      console.log(this.usersWithAssignment);
-      console.info("UserService: (getCachedUsersWithAssignment) getting cached User[]");
-      return Observable.of(this.usersWithAssignment);
+        .subscribe(users => usersWithAssignment = users);
+      return Observable.of(usersWithAssignment);
     } else {
-      console.error("UserService: (getCachedUsersWithAssignment) no cached User[] 'UserService.usersWithAssignment'");
-      console.info("UserService: (getCachedUsersWithAssignment) getting User[] from 'UserService.getUsersWithAssignment'");
-      return this.getUsersWithAssignment();
+      console.error("UserService: (getUsersWithAssignment) no cached JSON data found in localStorage");
+      console.info("UserService: (getUsersWithAssignment) getting new User[] from 'UserService.getNewUsersWithAssignment'");
+      return this.getNewUsersWithAssignment();
     }
   }
 
   /*
-   *  @method getReassignedUsers
+   *  @method getUserWithAssignment
    *
-   *  Reshuffle and re-assign user
-   *  secret santa recipients.
-   *
-   *  Get User[] from local service 
-   *  cache if available.
+   *  Attempt to retrieve unique User
+   *  using provided parameter string[].
+   *  
+   *  Return as Observable<User[]>.
    */
-  getReassignedUsers(): Observable<User[]> {
-    return this.getUsersWithAssignment();
+  getUserWithAssignment(name: string[]): Observable<User[]> {
+    return this.getUsersWithAssignment()
+      .map(users => this.filterUsersByName(users, name, 'AND'))
   }
 
+  /*
+   *  @method authUser
+   *
+   *  Simple client-side user
+   *  authorisation.
+   *
+   *  Authenticate provided elements
+   *  against provided User. If mismatch
+   *  authorisation fails. If all match
+   *  authorisation is successful.
+   *
+   *  If successful cache auth token in
+   *  sessionStorage.
+   *
+   *  Return as boolean.  
+   */
+  authUser(user: User, form: any): boolean {
+    if(user.email != form.email) return false;
+    if(user.phone.replace("+", "") != form.phone) return false;
+    sessionStorage.setItem("gilt.secret-santa.UserService." + user.guid + ".auth", "true");
+    return true;
+  }
+
+  /*
+   *  @method filterUsersByName
+   *
+   *  Filter provided User[] using
+   *  provided filter string[].
+   *
+   *  Return as User[];
+   */
   filterUsersByName(users: User[], filterValues: string[], 
     logicalOperator: string): User[] {
      
@@ -259,22 +301,6 @@ export class UserService {
     });
 
     return filteredUsers;
-  }
-
-  getCachedIndividualUserWithAssignment(name: string[]): Observable<User[]> {
-    return this.getCachedUsersWithAssignment()
-      .map(users => this.filterUsersByName(users, name, 'AND'))
-      .map(user => {
-        return user;
-      })
-  }
-
-  authUser(user: User, form: any): boolean {
-    console.log(user, form);
-    if(user.email != form.email) return false;
-    if(user.phone.replace("+", "") != form.phone) return false;
-    sessionStorage.setItem("gilt.secret-santa.UserService." + user.guid + ".auth", "true");
-    return true;
   }
 
 }

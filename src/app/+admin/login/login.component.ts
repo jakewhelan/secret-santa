@@ -20,6 +20,17 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
+  /*
+   *  @method onFormSubmit
+   *
+   *  Event handlers for login form
+   *  submission. Authenticate admin
+   *  with simple condition.
+   *
+   *  If successful login, create 
+   *  and cache auth token in localSession. 
+   *  If unsuccessful display error message.
+   */
   onFormSubmit(form: any): void {
     let authorisation = (this.username == form.user && this.password == form.pass);
     if(authorisation) {
@@ -31,6 +42,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  /* 
+   *  @method login
+   *
+   *  Route authorised admin to dashboard.
+   */
   login() {
     this.router.navigate(['admin/dashboard']); 
   }

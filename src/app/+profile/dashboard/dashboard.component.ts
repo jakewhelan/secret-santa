@@ -22,8 +22,23 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) {}
 
-  getCachedIndividualUserWithAssignment(): void {
-    this.userService.getCachedIndividualUserWithAssignment(this.name)
+  /*
+   *  @method getUserWithAssignment
+   *
+   *  Subscribe to Observable<User[]>
+   *  from UserService. Attempt to 
+   *  retrieve unique User using 
+   *  query string[] retrieved from
+   *  route params.
+   *
+   *  If more than 1 result is returned
+   *  provided user argument is not
+   *  unique.
+   *
+   *  Assign User to this.user.
+   */
+  getUserWithAssignment(): void {
+    this.userService.getUserWithAssignment(this.name)
       .first()
       .subscribe(users => {
         if(users.length != 1) {
@@ -32,27 +47,47 @@ export class DashboardComponent implements OnInit {
         } else {
           console.info('ProfileComponent: (getCachedUserWithAssignment) exact match found for User')
           this.user = users[0];
+          if(sessionStorage.getItem("gilt.secret-santa.UserService." + this.user.guid + ".auth") != "true") {
+            this.logout();
+          }
         }
       });
   }
 
+  /*
+   *  @method getRouteParams
+   *
+   *  Subscribe to params from
+   *  Router.
+   *
+   *  Assign string[] for later use
+   *  as argument for filtering. Assign 
+   *  string for later use in routing.
+   */
   getRouteParams(): void {
     this.route.params
       .first()
       .subscribe(params => {
         this.param = params['name']
         this.name = this.param.split('-');
-        this.getCachedIndividualUserWithAssignment();
+        this.getUserWithAssignment();
       });
   }
 
+  /* 
+   *  @method logout
+   *
+   *  Delete auth token from
+   *  localSession cache. Route 
+   *  deauthorised user to login. 
+   */
   logout() {
     sessionStorage.removeItem("gilt.secret-santa.UserService." + this.user.guid + ".auth");
     this.router.navigate(['profile', this.param]); 
   }
 
   ngOnInit() {
-     this.getRouteParams();
+    this.getRouteParams();
   }
 
 }

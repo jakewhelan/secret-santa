@@ -1,6 +1,6 @@
 <div class="container">
   <span class="link" (click)="logout()">logout</span><br>
-  <span class="link" (click)="getReassignedUsers()">reassign users</span>
+  <span class="link" (click)="getNewUsersWithAssignment()">reassign users</span>
   <form>
     <div class="form-group">
       <input type="text" id="name" name="name" [(ngModel)]="searchTerms" (keyup)="applySearchTerms()" placeholder="Search">
