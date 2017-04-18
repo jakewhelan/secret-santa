@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit {
       this.login();
     } else {
       this.authState = 1;
-      console.log("boohoo!!");
     }
   }
 

@@ -1,17 +1,17 @@
 <div class="container">
+  <h2>Welcome to Gilt Secret Santa</h2>
   <form>
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" id="name" name="name" [(ngModel)]="searchTerms" (keyup)="applySearchTerms()">
     </div>
   </form>
+  --------------------------<br>
+  USER LIST<br>
+  --------------------------<br>
   <div *ngFor="let user of filteredUsers">
     <div>{{user.name.first}} {{user.name.last}}</div>
     <a [routerLink]="['profile', user.name.first.toLowerCase() + (user.name.last ? '-' : '') + user.name.last.toLowerCase()]">link</a>
-    <div>{{user.email}}</div>
-    <div>{{user.phone}}</div>
-    --------------------------
-    <div (click)="getReassignedUsers()">Assigned to: {{user.assignment.name.first}} {{user.assignment.name.last}}</div>
-    --------------------------
+    <br>--------------------------
   </div>
 </div>

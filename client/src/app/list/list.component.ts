@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 // services
 import { UserService } from '../shared/services/user/user.service';
-import { LoaderService } from '../shared/components/loader/loader.service';
 
 // data models
 import { User } from '../shared/models/user.model';
@@ -37,16 +36,6 @@ export class ListComponent implements OnInit {
       .first()
       .subscribe(users => {
         this.users = users
-        this.filteredUsers = users;
-      });
-  } 
-
-  getReassignedUsers(): void {
-    this.userService.getReassignedUsers()
-      .map(users => this.filterUsersByName(users))
-      .first()
-      .subscribe(users => {
-        this.users = users;
         this.filteredUsers = users;
       });
   }

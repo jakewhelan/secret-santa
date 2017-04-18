@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Hello admin</h2>
+  <p>Please confirm your identity to continue.</p>
+  <form (ngSubmit)="onFormSubmit(loginForm.value)" #loginForm="ngForm">
+    <div>
+      <input type="text" id="user" name="user" placeholder="Username" #user="ngModel" ngModel required>
+    </div>
+    <div [hidden]="user.valid || user.pristine">
+      This field is required
+    </div>
+    <div>
+      <input type="text" id="pass" name="pass" placeholder="Password" #pass="ngModel" ngModel required>
+    </div>
+    <div [hidden]="pass.valid || pass.pristine">
+      This field is required
+    </div>
+    <button type="submit" [disabled]="!loginForm.form.valid">Submit</button>
+    <div *ngIf="authState == 1">
+      Authorisation error: Incorrect username or password
+      <br><br>
+      Demo hint:
+      <ul>
+        <li>{{username}}</li>
+        <li>{{password}}</li>
+      </ul>
+    </div>
+  </form>
+</div>

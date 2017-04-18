@@ -1,0 +1,18 @@
+<div class="container">
+  <span class="link" (click)="logout()">logout</span><br>
+  <span class="link" (click)="getReassignedUsers()">reassign users</span>
+  <form>
+    <div class="form-group">
+      <input type="text" id="name" name="name" [(ngModel)]="searchTerms" (keyup)="applySearchTerms()" placeholder="Search">
+    </div>
+  </form>
+  --------------------------
+  <div *ngFor="let user of filteredUsers">
+    <div>{{user.name.first}} {{user.name.last}}</div>
+    <div>{{user.email}}</div>
+    <div>{{user.phone}}</div>
+    <div>{{user.guid}}</div>
+    <div>Assigned to: {{user.assignment.name.first}} {{user.assignment.name.last}}</div>
+    --------------------------
+  </div>
+</div>
