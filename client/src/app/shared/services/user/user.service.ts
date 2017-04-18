@@ -12,15 +12,16 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 // data models
-import { User } from './models/user.model';
-import { Name } from './models/name.model';
+import { User } from '../../models/user.model';
+import { Name } from '../../models/name.model';
 
 @Injectable()
-export class ListService {
+export class UserService {
 
   private users: any[] = null;
   private typeCastUsers: User[] = null;
   private usersWithAssignment: User[] = null;
+  private selectedUser: User = null;
 
   constructor(
     private http: Http,
@@ -37,18 +38,18 @@ export class ListService {
    */
   getUsers(forceHttpGet?: boolean): Observable<any[]> {
     const endpoint = "http://localhost:3000/api/users/";
-    this.users = this.users || JSON.parse(localStorage.getItem("gilt.secret-santa.ListService.users"));
+    this.users = this.users || JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.users"));
     if(this.users && !forceHttpGet) {
-      console.info("ListService: (getUsersWithAssignment) getting cached any[]")
+      console.info("UserService: (getUsersWithAssignment) getting cached any[]")
       return Observable.of(this.users);
     } else {
-      console.info("ListService: (getUsers) get -> " + endpoint);
+      console.info("UserService: (getUsers) get -> " + endpoint);
       return this.http
         .get(endpoint)
         .map(response => {
           let users = response.json().users;
           this.users = users;
-          localStorage.setItem("gilt.secret-santa.ListService.users", JSON.stringify(users));
+          localStorage.setItem("gilt.secret-santa.UserService.users", JSON.stringify(users));
           return users;
         })
         .catch(error => {
@@ -73,10 +74,18 @@ export class ListService {
   castUsers(users: any[]): Observable<User[]> {
     let typeCastUsers: User[] = [];
     users.map(user => {
-      let n: Name = new Name();
       let u: User = new User();
-      Object.assign(n, user.name);
-      user.name = n;
+      let un: Name = new Name();
+      let a: User = new User();
+      let an: Name = new Name();
+      if(user.assignment) {
+        Object.assign(an, user.assignment.name);
+        user.assignment.name = an;
+        Object.assign(a, user.assignment);
+        user.assignment = a;
+      }
+      Object.assign(un, user.name);
+      user.name = un;
       Object.assign(u, user);
       typeCastUsers.push(u);
     });
@@ -132,11 +141,11 @@ export class ListService {
       .subscribe(users => usersWithAssignment = users);
 
     users.map(
-        (user, index) => usersWithAssignment[index].assignment = (index != users.length - 1) ? users[index + 1] : users[0]
-      );
+      (user, index) => usersWithAssignment[index].assignment = (index != users.length - 1) ? users[index + 1] : users[0]
+    );
 
     this.usersWithAssignment = usersWithAssignment;
-    localStorage.setItem("gilt.secret-santa.ListService.usersWithAssignment", JSON.stringify(usersWithAssignment));
+    localStorage.setItem("gilt.secret-santa.UserService.usersWithAssignment", JSON.stringify(usersWithAssignment));
     return Observable.of(usersWithAssignment);
   }
 
@@ -154,7 +163,6 @@ export class ListService {
         .flatMap(users => this.castUsers(users))
         .flatMap(users => this.shuffleUsers(users))
         .flatMap(users => this.assignUsers(users))
-        //.map(users => { console.log(users); return users})
   }
 
   /*
@@ -165,20 +173,22 @@ export class ListService {
    */
   getCachedUsersWithAssignment(): Observable<User[]> {
     let _localStorage = {
-      usersWithAssignment: JSON.parse(localStorage.getItem("gilt.secret-santa.ListService.usersWithAssignment"))
+      usersWithAssignment: JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.usersWithAssignment"))
     }
-    if(_localStorage.usersWithAssignment && !this.usersWithAssignment) {
-      console.info("ListService: (getCachedUsersWithAssignment) cached JSON data found in localStorage");
+    if(_localStorage.usersWithAssignment) {
+      console.log("localstorage?");
+      console.info("UserService: (getCachedUsersWithAssignment) cached JSON data found in localStorage");
       this.castUsers(JSON.parse(JSON.stringify(_localStorage.usersWithAssignment)))
         .first()
         .subscribe(users => this.usersWithAssignment = users);
     }
     if(this.usersWithAssignment) {
-      console.info("ListService: (getCachedUsersWithAssignment) getting cached User[]");
+      console.log(this.usersWithAssignment);
+      console.info("UserService: (getCachedUsersWithAssignment) getting cached User[]");
       return Observable.of(this.usersWithAssignment);
     } else {
-      console.error("ListService: (getCachedUsersWithAssignment) no cached User[] 'ListService.usersWithAssignment'")
-      console.info("ListService: (getCachedUsersWithAssignment) getting User[] from 'ListService.getUsersWithAssignment'")
+      console.error("UserService: (getCachedUsersWithAssignment) no cached User[] 'UserService.usersWithAssignment'");
+      console.info("UserService: (getCachedUsersWithAssignment) getting User[] from 'UserService.getUsersWithAssignment'");
       return this.getUsersWithAssignment();
     }
   }
@@ -193,30 +203,7 @@ export class ListService {
    *  cache if available.
    */
   getReassignedUsers(): Observable<User[]> {
-    if(this.typeCastUsers) {
-      console.info("ListService: (getReassignedUsers) getting cached User[]");
-      return this.shuffleUsers(this.typeCastUsers)
-        .flatMap(users => this.assignUsers(users))
-    } else {
-      console.error("ListService: (getReshuffledUsers) no cached User[] 'ListService.typeCastUsers'")
-      console.info("ListService: (getReshuffledUsers) getting User[] from 'ListService.getUsersWithAssignment'")
-      return this.getUsersWithAssignment();
-    }
-  }
-
-  /*
-   *  @method getIndividualUserWithAssignment
-   *
-   *  Filter User[]
-   */
-  getIndividualUserWithAssignment(name: Name): Observable<User[]> {
-    return this.getCachedUsersWithAssignment()
-      .map(user => {
-        return user
-          .filter(user => {
-            return user.name.first == name.first && user.name.last == name.last
-          })
-      });
+    return this.getUsersWithAssignment();
   }
 
   filterUsersByName(users: User[], filterValues: string[], 
@@ -272,6 +259,22 @@ export class ListService {
     });
 
     return filteredUsers;
+  }
+
+  getCachedIndividualUserWithAssignment(name: string[]): Observable<User[]> {
+    return this.getCachedUsersWithAssignment()
+      .map(users => this.filterUsersByName(users, name, 'AND'))
+      .map(user => {
+        return user;
+      })
+  }
+
+  authUser(user: User, form: any): boolean {
+    console.log(user, form);
+    if(user.email != form.email) return false;
+    if(user.phone.replace("+", "") != form.phone) return false;
+    sessionStorage.setItem("gilt.secret-santa.UserService." + user.guid + ".auth", "true");
+    return true;
   }
 
 }

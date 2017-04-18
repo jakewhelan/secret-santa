@@ -5,8 +5,12 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { PageNotFoundComponent } from './layout/page-not-found/page-not-found.component';
 
 const routes: Routes = [
+  // core routes
   { path: '', loadChildren: './list/list.module#ListModule' },
-  { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
+
+  // lazy routes
+  { path: 'profile', loadChildren: './+profile/profile.module#ProfileModule' },
+  { path: 'admin', loadChildren: './+admin/admin.module#AdminModule' },
 
   // 404 page not found
   { 

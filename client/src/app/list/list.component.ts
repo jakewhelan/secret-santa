@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 // services
-import { ListService } from './list.service';
+import { UserService } from '../shared/services/user/user.service';
 import { LoaderService } from '../shared/components/loader/loader.service';
 
 // data models
-import { User } from './models/user.model';
-import { Name } from './models/name.model';
+import { User } from '../shared/models/user.model';
+import { Name } from '../shared/models/name.model';
 
 @Component({
   selector: 'ss-list',
@@ -16,9 +16,11 @@ import { Name } from './models/name.model';
 export class ListComponent implements OnInit {
 
   public users: User[];
+  public filteredUsers: User[];
+  public searchTerms: string = "";
 
   constructor(
-    private listService: ListService
+    private userService: UserService
   ) {}
 
   /*
@@ -29,31 +31,37 @@ export class ListComponent implements OnInit {
    *
    *  Assign User[] to this.users
    */
-  getUsersWithAssignment(): void {
-    this.listService.getUsersWithAssignment()
+  getCachedUsersWithAssignment(): void {
+    this.userService.getCachedUsersWithAssignment()
+      .map(users => this.filterUsersByName(users))
       .first()
-      .subscribe(users => this.users = users)
+      .subscribe(users => {
+        this.users = users
+        this.filteredUsers = users;
+      });
   } 
 
   getReassignedUsers(): void {
-    this.listService.getReassignedUsers()
+    this.userService.getReassignedUsers()
+      .map(users => this.filterUsersByName(users))
       .first()
-      .subscribe(users => this.users = users)
+      .subscribe(users => {
+        this.users = users;
+        this.filteredUsers = users;
+      });
   }
 
-  getIndividualUserWithAssignment(name: Name): void {
-    this.listService.getIndividualUserWithAssignment(name)
-      .first()
-      .subscribe(users => this.users = users)//this.users = users)
+  applySearchTerms(): void {
+    this.filteredUsers = this.filterUsersByName(this.users);
+  }
+
+  filterUsersByName(users: User[]): User[] {
+    return this.userService
+      .filterUsersByName(users, this.searchTerms.split(" "), "AND");
   }
 
   ngOnInit() {
-    let name = new Name();
-    name.first = "Lisa";
-    name.last = "Masterson";
-    //console.log(name);
-    //this.getIndividualUserWithAssignment(name);
-    this.getUsersWithAssignment();
+    this.getCachedUsersWithAssignment();
   }
 
 }

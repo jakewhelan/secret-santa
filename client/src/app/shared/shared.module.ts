@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 
 // components
 import { LoaderComponent } from './components/loader/loader.component';
+import { UserService } from './services/user/user.service';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 
     // components
     LoaderComponent
-  ]
+  ],
+  providers: [UserService]
 })
 export class SharedModule { }

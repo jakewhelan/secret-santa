@@ -1,0 +1,14 @@
+<div class="container">
+  <div *ngIf="user">
+    <h2>Welcome {{user.name.first}}</h2>
+    <div></div>
+    <div></div>
+    Your assignment is:
+    {{user.assignment.name.first}} {{user.assignment.name.last}}
+  </div>
+  <div>
+    <h2>Why not get them a great gift from Gilt?</h2>
+    <div></div>
+  </div>
+  <span class="link" (click)="logout()">logout</span>
+</div>

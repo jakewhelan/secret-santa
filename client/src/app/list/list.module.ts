@@ -4,20 +4,21 @@ import { CommonModule } from '@angular/common';
 // routing module
 import { ListRoutingModule } from './list.routes';
 
+// shared module
+import { SharedModule } from '../shared/shared.module';
+
 // components
 import { ListComponent } from './list.component';
-
-// services
-import { ListService } from './list.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    ListRoutingModule
+    ListRoutingModule,
+    SharedModule
   ],
   declarations: [
     ListComponent
   ],
-  providers: [ListService]
+  providers: []
 })
 export class ListModule { }
