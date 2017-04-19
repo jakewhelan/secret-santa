@@ -14,10 +14,6 @@ app.use(cookieParser());
 app.use(express.static(__dirname));
 app.use(favicon(__dirname + '/favicon.ico'));
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'))
-});
-
 app.get("/api/users/", (request, response) => {
   fs.readFile(__dirname + '/data/users.json', 'utf8', function (error, data) {
     if(error) {
@@ -34,6 +30,10 @@ app.get("/api/gifts/", (request, response) => {
     }
     response.json(JSON.parse(data));
   });
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/index.html'))
 });
 
 app.use((req, res, next) => {
