@@ -1,17 +1,17 @@
-<div class="container">
-  <h2>Welcome to Gilt Secret Santa</h2>
+<div class="container translate-in-right">
+  <h2 class="heading">Welcome to Gilt Secret Santa</h2>
   <form>
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" [(ngModel)]="searchTerms" (keyup)="applySearchTerms()">
-    </div>
+    <fieldset class="filter__container">
+      <label class="filter__label" for="email">Filter</label>
+      <input class="filter" type="text" id="name" name="name" [(ngModel)]="filterTerms" (keyup)="applyFilterTerms()" placeholder="Enter a name">
+    </fieldset>
   </form>
-  --------------------------<br>
-  USER LIST<br>
-  --------------------------<br>
-  <div *ngFor="let user of filteredUsers">
-    <div>{{user.name.first}} {{user.name.last}}</div>
-    <a [routerLink]="['profile', user.name.first.toLowerCase() + (user.name.last ? '-' : '') + user.name.last.toLowerCase()]">link</a>
-    <br>--------------------------
+  <div class="users">
+    <div class="users__item__container translate-in-right" *ngFor="let user of filteredUsers">
+      <div class="users__item">
+        <h3 class="user__item__name">{{user.name.first}} {{user.name.last}}</h3>
+        <a class="user__item__link" [routerLink]="['profile', user.name.first.toLowerCase() + (user.name.last ? '-' : '') + user.name.last.toLowerCase()]">Log In</a>
+      </div>
+    </div>
   </div>
 </div>

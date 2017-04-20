@@ -7,7 +7,7 @@ import { ListComponent } from './list.component';
 const routes: Routes = [
   { 
     path: '', component: ListComponent, 
-    data: { title: 'Secret Santa | Gilt Groupe' } 
+    data: { title: 'Secret Santa | Gilt' } 
   }
 ];
 

@@ -37,7 +37,7 @@ export class UserService {
     const endpoint = "http://localhost:3000/api/users/";
     let users = JSON.parse(localStorage.getItem("gilt.secret-santa.UserService.users"));
     if(users && !forceHttpGet) {
-      console.info("UserService: (getUsersWithAssignment) getting cached any[]")
+      console.info("UserService: (getUsers) getting cached any[]")
       return Observable.of(users);
     } else {
       console.info("UserService: (getUsers) GET -> " + endpoint);
@@ -46,7 +46,7 @@ export class UserService {
         .map(response => {
           let users = response.json().users || [];
           if(users.length == 0) {
-            console.error("UserService: (assignUsers) provided any[] has no elements");
+            console.error("UserService: (getUsers) provided any[] has no elements");
             return [];
           } else {
             localStorage.setItem("gilt.secret-santa.UserService.users", JSON.stringify(users));
@@ -66,7 +66,7 @@ export class UserService {
    *  Type cast JSON data any[] to
    *  User[].
    *
-   *  Clone User[] to prevent circular
+   *  Clone any[] to prevent circular
    *  Object references. Type cast
    *  any[] 2 levels deep to support
    *  user.assignment: Object & 
@@ -74,7 +74,7 @@ export class UserService {
    *  Build new array of type cast User
    *  elements.
    *
-   *  Return User[] as Observable<User[]>.
+   *  Return any[] as Observable<User[]>.
    */
   castUsers(users: any[]): Observable<User[]> {
     users = JSON.parse(JSON.stringify(users));
@@ -170,10 +170,10 @@ export class UserService {
    *  Observable<User[]>
    */
   getNewUsersWithAssignment(): Observable<User[]> {  
-      return this.getUsers()
-        .flatMap(users => this.castUsers(users))
-        .flatMap(users => this.shuffleUsers(users))
-        .flatMap(users => this.assignUsers(users))
+    return this.getUsers()
+      .flatMap(users => this.castUsers(users))
+      .flatMap(users => this.shuffleUsers(users))
+      .flatMap(users => this.assignUsers(users))
   }
 
   /*

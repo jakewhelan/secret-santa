@@ -3,23 +3,26 @@
 header {
   @include grid(row);
   background: $brand-black;
-  height: 50px;
+  height: 92px;
 }
 
 .container {
   @include grid(column, 12);
-  @include grid(row, align-middle);
+  @include grid(row, null, align-middle);
 }
 
 .brand {
-  @include grid(column, 12, align-middle);
-  @include grid(row, align-middle);
+  @include grid(column, auto, align-bottom);
+  @include grid(row);
   display: block;
   color: $brand-white;
   text-decoration: none;
 }
 
 .brand__heading {
-  @include grid(column, 12, align-middle);
-  margin-bottom: 0;
+  font-size: 0;
+  margin-bottom: 20px;
+  width: 128px;
+  height: 28px;
+  background: transparent url(~assets/img/nav-sprite.png) no-repeat -250px -15px;
 }

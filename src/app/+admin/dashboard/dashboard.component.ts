@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
 
   public users: User[];
   public filteredUsers: User[];
-  public searchTerms: string = "";
+  public filterTerms: string = "";
 
   constructor(
     private userService: UserService,
@@ -25,9 +25,7 @@ export class DashboardComponent implements OnInit {
    *  @method getUsersWithAssignment
    *
    *  Subscribe to Observable<User[]>
-   *  from ListService. Filter returned
-   *  User[] with string[] retrieved
-   *  from component input element.
+   *  from ListService.
    *
    *  Assign User[] to this.users &
    *  this.filteredUsers.
@@ -37,11 +35,10 @@ export class DashboardComponent implements OnInit {
    */
   getUsersWithAssignment(): void {
     this.userService.getUsersWithAssignment()
-      .map(users => this.filterUsersByName(users))
       .first()
       .subscribe(users => {
         this.users = users
-        this.filteredUsers = users;
+        this.filteredUsers = this.filterUsersByName(users);
       });
   } 
 
@@ -51,9 +48,7 @@ export class DashboardComponent implements OnInit {
    *  Get shuffled and reassigned User[].
    *
    *  Subscribe to Observable<User[]>
-   *  from ListService. Filter returned
-   *  User[] with string[] retrieved
-   *  from component input element.
+   *  from ListService.
    *
    *  Assign User[] to this.users &
    *  this.filteredUsers.
@@ -63,11 +58,10 @@ export class DashboardComponent implements OnInit {
    */
   getNewUsersWithAssignment(): void {
     this.userService.getNewUsersWithAssignment()
-      .map(users => this.filterUsersByName(users))
       .first()
       .subscribe(users => {
         this.users = users;
-        this.filteredUsers = users;
+        this.filteredUsers = this.filterUsersByName(users);
       });
   }
 
@@ -77,7 +71,7 @@ export class DashboardComponent implements OnInit {
    *  Simple interface for 
    *  this.filterUsersByName.
    */
-  applySearchTerms(): void {
+  applyFilterTerms(): void {
     this.filteredUsers = this.filterUsersByName(this.users);
   }
 
@@ -90,7 +84,7 @@ export class DashboardComponent implements OnInit {
    */
   filterUsersByName(users: User[]): User[] {
     return this.userService
-      .filterUsersByName(users, this.searchTerms.split(" "), "AND");
+      .filterUsersByName(users, this.filterTerms.split(" "), "AND");
   }
 
   /* 

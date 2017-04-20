@@ -1,24 +1,19 @@
-<div class="container">
-  <h2>Hello {{user.name.first}}</h2>
-  <p>Please confirm your identity to continue.</p>
+<div class="container translate-in-right">
+  <h2 class="heading">Hello {{user.name.first}}</h2>
+  <h3 class="sub-heading">Please confirm your identity to continue</h3>
   <form (ngSubmit)="onFormSubmit(loginForm.value)" #loginForm="ngForm">
-    <div>
-      <input type="text" id="email" name="email" placeholder="Email" #email="ngModel" ngModel required>
-    </div>
-    <div [hidden]="email.valid || email.pristine">
-      This field is required
-    </div>
-    <div>
-      <input type="text" id="phone" name="phone" placeholder="Phone" #phone="ngModel" ngModel required>
-    </div>
-    <div [hidden]="phone.valid || phone.pristine">
-      This field is required
-    </div>
-    <button type="submit" [disabled]="!loginForm.form.valid">Submit</button>
-    <div *ngIf="authState == 1">
-      Authorisation error: Incorrect email or phone
-      <br><br>
-      Demo hint:
+    <fieldset class="login__container">
+      <label class="login__label" for="email">Email</label>
+      <input class="login" type="text" id="email" name="email" #email="ngModel" ngModel required>
+      <p class="login__error" [attr.data-hidden]="email.valid || email.pristine">This field is required</p>
+      <label class="login__label" for="phone">Phone number</label>
+      <input class="login" type="text" id="phone" name="phone" #phone="ngModel" ngModel required>
+      <p [attr.data-hidden]="phone.valid || phone.pristine">This field is required</p>
+      <button class="login__button" type="submit" [disabled]="!loginForm.form.valid">Log In</button>
+    </fieldset>
+    <div class="error-message translate-in-right" *ngIf="authState == 1">
+      <h4 class="error-message__heading">Authorisation error: Incorrect email or phone</h4>
+      <h5>Hint:</h5>
       <ul>
         <li>{{user.email}}</li>
         <li>{{user.phone.replace("+", "")}}</li>

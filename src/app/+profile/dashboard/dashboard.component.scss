@@ -1,5 +1,80 @@
-span.link {
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
+@import "~assets/scss/_common";
+
+.heading {
+  font-size: 48px;
+  line-height: 52px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.sub-heading {
+  font-family: $brand-font-secondary; 
+  text-align: center;
+  color: $brand-black--light;
+}
+
+.control__container {
+  @include grid(row, null, align-center);
+  max-width: 840px;
+  margin: 20px auto 80px;
+}
+
+.control {
+  float: left;
+  margin: 0 10px;
+}
+
+.gifts {
+  @include grid(row, null, align-left);
+  max-width: 840px;
+  margin: 0 auto 40px;
+}
+
+.gifts__item__container {
+  @include grid(column, 12, align-left);
+  padding: 10px;
+
+  @include breakpoint(medium) {
+    @include grid(column, 6, align-left);
+  }
+  @include breakpoint(large) {
+    @include grid(column, 4, align-left);
+  }
+}
+
+.gifts__item {
+  width: 100%;
+}
+
+.gifts__item__link {
+  text-decoration: none;
+  color: $brand-black--light;
+  &:visited, &:hover, &:focus {
+    color: $brand-black--light;
+  }
+}
+
+.gift__item__image {
+  width: 100%;
+  height: auto;
+  border: 1px solid $brand-grey--light;
+  min-height: 346px;
+}
+
+.gifts__text {
+  font-family: $brand-font-secondary;
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 0;
+  &--small {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  &--price {
+    font-family: $brand-font-tertiary;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 28px;
+    color: $brand-yellow;
+  }
 }

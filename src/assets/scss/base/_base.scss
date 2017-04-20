@@ -1,3 +1,5 @@
+@import "~assets/scss/common/_breakpoint";
+
 html {
   box-sizing: border-box; 
   min-width: 320px;
@@ -10,8 +12,8 @@ html {
 body {
   font-size: 16px;
   line-height: 20px; 
-  font-family: $brand-font; 
-  color: $brand-black; 
+  font-family: $brand-font-secondary; 
+  color: $brand-black--light; 
 }
 
 *:focus, *:hover {
@@ -78,4 +80,135 @@ p {
 
 p:last-child { 
   margin-bottom: 0;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  font-weight: $font-regular; 
+  font-family: $brand-font-tertiary; 
+  font-style: italic;
+  color: $brand-grey--dark;
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid $brand-grey;
+  &:active, &:focus, &:hover {
+    border: 1px solid $brand-yellow;
+  }
+}
+
+button {
+  font-size: 18px;
+  height: 45px;
+  line-height: 46px;
+  width: 100%;
+  -moz-background-clip: border-box;
+  -ms-background-clip: border-box;
+  -o-background-clip: border-box;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  display: block;
+  font-family: $brand-font-secondary;
+  font-weight: 600;
+  background-color: transparent;
+  border: 0;
+  box-sizing: content-box;
+  cursor: pointer;
+  font-weight: 400;
+  letter-spacing: .4px;
+  overflow: visible;
+  padding: 0;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  z-index: 1;
+  border: #e09d00;
+  color: #e09d00;
+  display: block;
+  margin-top: 24px;
+  -webkit-transition-delay: initial;
+  -webkit-transition-duration: .1s;
+  -webkit-transition-property: -webkit-transform,color,border,background,opacity;
+  -webkit-transition-property: transform,color,border,background,opacity;
+  -webkit-transition-timing-function: ease;
+  transition-delay: initial;
+  transition-duration: .1s;
+  transition-property: -webkit-transform,color,border,background,opacity;
+  transition-property: transform,color,border,background,opacity;
+  transition-timing-function: ease;
+  &:disabled {
+    -moz-opacity: .5;
+    -ms-opacity: .5;
+    -o-opacity: .5;
+    -webkit-opacity: .5;
+    opacity: .5;
+    filter: alpha(opacity=50);
+    cursor: not-allowed
+  }
+  &:after {
+    border-radius: inherit;
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    width: inherit;
+    z-index: -1;
+    -webkit-transition-delay: initial;
+    -webkit-transition-duration: .1s;
+    -webkit-transition-property: -webkit-transform,color,border,background,opacity;
+    -webkit-transition-property: transform,color,border,background,opacity;
+    -webkit-transition-timing-function: ease;
+    transition-delay: initial;
+    transition-duration: .1s;
+    transition-property: -webkit-transform,color,border,background,opacity;
+    transition-property: transform,color,border,background,opacity;
+    transition-timing-function: ease;
+    background: transparent;
+    border: 1px solid #e09d00;
+    background-color: rgba(0,0,0,0);
+    background-image: -webkit-linear-gradient(to bottom,transparent,transparent);
+    background-image: linear-gradient(to bottom,transparent,transparent);
+    background-repeat: repeat-x;
+  }
+  &:hover {
+    color: #383838;
+    &:after {
+      -ms-transform: scaleX(1.02105263) scaleY(1.08888889);
+      -webkit-transform: scaleX(1.02105263) scaleY(1.08888889);
+      transform: scaleX(1.02105263) scaleY(1.08888889);
+      background: transparent;
+      background-image: none;
+      border: 1px solid #383838;
+    }
+  }
+  & + button {
+    margin-top: 10px;
+  }
+  @include breakpoint(medium) {
+    display: inline-block;
+    width: 190px;
+    margin-top: 24px;
+     & + button {
+      margin-top: 24px;
+    }
+  }
+  @include breakpoint(large) {
+    display: inline-block;
+    width: 190px;
+    margin-top: 24px;
+    & + button {
+      margin-top: 24px;
+    }
+  }
 }

@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'NeutraTextBook';
+  src: url('~/assets/fonts/NeutraTextBook.eot');
+  src: url('~/assets/fonts/NeutraTextBook.woff2') format('woff2'),
+       url('~/assets/fonts/NeutraTextBook.woff') format('woff'),
+       url('~/assets/fonts/NeutraTextBook.ttf') format('truetype'),
+       url('~/assets/fonts/NeutraTextBook.svg#NeutraText-Book') format('svg'),
+       url('~/assets/fonts/NeutraTextBook.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ProximaNova-Regular';
+  src: url('~/assets/fonts/ProximaNova-Regular.eot');
+  src: url('~/assets/fonts/ProximaNova-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/ProximaNova-Regular.woff') format('woff'),
+       url('~/assets/fonts/ProximaNova-Regular.ttf') format('truetype'),
+       url('~/assets/fonts/ProximaNova-Regular.svg#ProximaNova-Regular') format('svg'),
+       url('~/assets/fonts/ProximaNova-Regular.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}

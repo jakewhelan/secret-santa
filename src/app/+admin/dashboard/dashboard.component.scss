@@ -1,5 +1,78 @@
-span.link {
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
+@import "~assets/scss/_common";
+
+.heading {
+  font-size: 48px;
+  line-height: 52px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.admin-control__container {
+  @include grid(row, null, align-center);
+  max-width: 840px;
+  margin: 20px auto 16px;
+}
+
+.admin-control { 
+  @include breakpoint(medium) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  @include breakpoint(large) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.filter__container {
+  @include grid(row, null, align-center);
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.filter__label {
+  @include grid(column, 12, align-center);
+  margin-top: 20px;
+  padding-left: 5px;
+}
+
+.filter {
+  @include grid(column, 12, align-center);
+  margin: 0 auto 20px;
+}
+
+.users {
+  @include grid(row);
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.users__item__container {
+  @include grid(column, 12);
+  @include grid(row, null, align-center);
+}
+
+.users__item {
+  @include grid(column, 12, align-center);
+  border: 1px solid $brand-grey;
+  background: $brand-grey--light;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.user__item__name {
+  font-size: 28px;
+  line-height: 32px;
+  font-family: $brand-font-secondary;
+}
+
+.user__item__detail {
+  font-size: 20px;
+  line-height: 24px;
+  font-family: $brand-font-secondary;
+  margin-bottom: 0;
+  background: $brand-grey;
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
 }

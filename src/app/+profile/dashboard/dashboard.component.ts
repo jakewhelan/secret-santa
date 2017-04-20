@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 // services
 import { UserService } from '../../shared/services/user/user.service';
+import { GiftService } from './gift.service';
+
 // data models
 import { User } from '../../shared/models/user.model';
+import { Gift } from './gift.model';
 
 @Component({
   selector: 'ss-dashboard',
@@ -15,9 +19,11 @@ export class DashboardComponent implements OnInit {
   public param: string;
   public name: string[] = null;
   public user: User;
+  public gifts: Gift[];
 
   constructor(
     private userService: UserService,
+    private giftService: GiftService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -55,6 +61,26 @@ export class DashboardComponent implements OnInit {
   }
 
   /*
+   *  @method getGifts
+   *
+   *  Subscribe to Observable<Gift[]>
+   *  from GiftService. 
+   *
+   *  Assign Gift[] to this.gifts.
+   *
+   *  View will render using
+   *  this.gifts.
+   */
+  getGifts(): void {
+    this.giftService.getGifts()
+      .first()
+      .subscribe(gifts => {
+        this.gifts = gifts;
+      });
+  }
+
+
+  /*
    *  @method getRouteParams
    *
    *  Subscribe to params from
@@ -71,6 +97,7 @@ export class DashboardComponent implements OnInit {
         this.param = params['name']
         this.name = this.param.split('-');
         this.getUserWithAssignment();
+        this.getGifts();
       });
   }
 

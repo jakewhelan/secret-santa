@@ -7,23 +7,24 @@ $breakpoint-large: 1024px;
 $app-width: 1250px;
 
 // font
-$brand-font: Arial, Helvetica Neue, Helvetica, sans-serif;
+$brand-font: "NeutraTextBook", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$brand-font-secondary: "ProximaNova-Regular","Helvetica Neue", Helvetica, Arial, sans-serif;
+$brand-font-tertiary: Georgia, "Times New Roman", Times, serif;
 $font-regular: 400;
 $font-heavy: 700;  
 
 // brand colours
-$brand-black: #000000;
+$brand-black: #1d1d1d;
+$brand-black--light: #383838;
 $brand-white: #FFFFFF;
-$brand-grey: lightgrey;
-$brand-silver: silver;
-$brand-gold: gold;
-$brand-blue: blue;
-$brand-pink: pink;
-$brand-green: green;
-$brand-red: red;
+$brand-yellow: #E09D00;
+$brand-grey--dark: #737373;
+$brand-grey: #EDEDEA;
+$brand-grey--light: #f2f2f0;
+$brand-grey--dark: #969696;
 
 // borders
-$border: 1px solid $brand-black;
-$border--thick: 2px solid $brand-black;
-$border--dot: 2px dotted $brand-black;
+$border: 1px solid $brand-grey--light;
+$border--thick: 2px solid $brand-grey--light;
+$border--dot: 2px dotted $brand-grey--light;
 $border-radius: 4px;

@@ -11,6 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProfileComponent } from './profile.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { GiftService } from './dashboard/gift.service';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ProfileComponent, 
     LoginComponent, 
     DashboardComponent
-  ]
+  ],
+  providers: [GiftService]
 })
 export class ProfileModule { }

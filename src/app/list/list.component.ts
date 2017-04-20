@@ -16,7 +16,7 @@ export class ListComponent implements OnInit {
 
   public users: User[];
   public filteredUsers: User[];
-  public searchTerms: string = "";
+  public filterTerms: string = "";
 
   constructor(
     private userService: UserService
@@ -26,9 +26,7 @@ export class ListComponent implements OnInit {
    *  @method getUsersWithAssignment
    *
    *  Subscribe to Observable<User[]>
-   *  from ListService. Filter returned
-   *  User[] with string[] retrieved
-   *  from component input element.
+   *  from ListService.
    *
    *  Assign User[] to this.users &
    *  this.filteredUsers.
@@ -38,22 +36,20 @@ export class ListComponent implements OnInit {
    */
   getUsersWithAssignment(): void {
     this.userService.getUsersWithAssignment()
-      .map(users => this.filterUsersByName(users))
       .first()
       .subscribe(users => {
-        console.log(users);
         this.users = users
         this.filteredUsers = users;
       });
   }
 
   /*
-   *  @method applySearchTerms
+   *  @method applyFilterTerms
    *
    *  Simple interface for 
    *  this.filterUsersByName.
    */
-  applySearchTerms(): void {
+  applyFilterTerms(): void {
     this.filteredUsers = this.filterUsersByName(this.users);
   }
 
@@ -66,7 +62,7 @@ export class ListComponent implements OnInit {
    */
   filterUsersByName(users: User[]): User[] {
     return this.userService
-      .filterUsersByName(users, this.searchTerms.split(" "), "AND");
+      .filterUsersByName(users, this.filterTerms.split(" "), "AND");
   }
 
   ngOnInit() {

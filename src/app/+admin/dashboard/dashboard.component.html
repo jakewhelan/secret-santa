@@ -1,18 +1,24 @@
-<div class="container">
-  <span class="link" (click)="logout()">logout</span><br>
-  <span class="link" (click)="getNewUsersWithAssignment()">reassign users</span>
+<div class="container translate-in-right">
+  <h2 class="heading">Admin Control Panel</h2>
+  <div class="admin-control__container">
+    <button class="admin-control" (click)="logout()">Log Out</button>
+    <button class="admin-control" (click)="getNewUsersWithAssignment()">Re-assign Users</button>
+  </div>
   <form>
-    <div class="form-group">
-      <input type="text" id="name" name="name" [(ngModel)]="searchTerms" (keyup)="applySearchTerms()" placeholder="Search">
-    </div>
+    <fieldset class="filter__container">
+      <label class="filter__label" for="email">Filter</label>
+      <input class="filter" type="text" id="name" name="name" [(ngModel)]="filterTerms" (keyup)="applyFilterTerms()" placeholder="Enter a name">
+    </fieldset>
   </form>
-  --------------------------
-  <div *ngFor="let user of filteredUsers">
-    <div>{{user.name.first}} {{user.name.last}}</div>
-    <div>{{user.email}}</div>
-    <div>{{user.phone}}</div>
-    <div>{{user.guid}}</div>
-    <div>Assigned to: {{user.assignment.name.first}} {{user.assignment.name.last}}</div>
-    --------------------------
+  <div class="users">
+    <div class="users__item__container translate-in-right" *ngFor="let user of filteredUsers">
+      <div class="users__item">
+        <h3 class="user__item__name">{{user.name.first}} {{user.name.last}}</h3>
+        <p class="user__item__detail">{{user.email}}</p>
+        <p class="user__item__detail">{{user.phone}}</p>
+        <p class="user__item__detail">{{user.guid}}</p>
+        <p class="user__item__detail">Assigned to: {{user.assignment.name.first}} {{user.assignment.name.last}}</p>
+      </div>
+    </div>
   </div>
 </div>

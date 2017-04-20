@@ -8,7 +8,7 @@ footer {
 
 .container {
   @include grid(column, 12);
-  @include grid(row, align-middle);
+  @include grid(row, null, align-middle);
 }
 
 .brand {
@@ -18,4 +18,16 @@ footer {
   line-height: 20px;
   text-align: right;
   margin-bottom: 0;
+}
+
+.brand__link {
+  color: $brand-grey--dark;
+  font-family: $brand-font-tertiary;
+  font-size: 13px;
+  line-height: 17px;
+  text-decoration: none;
+  font-style: italic;
+  &:visited {
+    color: $brand-grey--dark;
+  }
 }

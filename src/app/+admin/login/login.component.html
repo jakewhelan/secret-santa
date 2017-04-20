@@ -1,24 +1,19 @@
-<div class="container">
-  <h2>Hello admin</h2>
-  <p>Please confirm your identity to continue.</p>
+<div class="container translate-in-right">
+  <h2 class="heading">Hello admin</h2>
+  <h3 class="sub-heading">Please confirm your identity to continue</h3>
   <form (ngSubmit)="onFormSubmit(loginForm.value)" #loginForm="ngForm">
-    <div>
-      <input type="text" id="user" name="user" placeholder="Username" #user="ngModel" ngModel required>
-    </div>
-    <div [hidden]="user.valid || user.pristine">
-      This field is required
-    </div>
-    <div>
-      <input type="text" id="pass" name="pass" placeholder="Password" #pass="ngModel" ngModel required>
-    </div>
-    <div [hidden]="pass.valid || pass.pristine">
-      This field is required
-    </div>
-    <button type="submit" [disabled]="!loginForm.form.valid">Submit</button>
-    <div *ngIf="authState == 1">
-      Authorisation error: Incorrect username or password
-      <br><br>
-      Demo hint:
+    <fieldset class="login__container">
+      <label class="login__label" for="user">Username</label>
+      <input class="login" type="text" id="user" name="user" #user="ngModel" ngModel required>
+      <p class="login__error" [attr.data-hidden]="user.valid || user.pristine">This field is required</p>
+      <label class="login__label" for="phone">Password</label>
+      <input class="login" type="password" id="pass" name="pass" #pass="ngModel" ngModel required>
+      <p class="login__error" [attr.data-hidden]="pass.valid || pass.pristine">This field is required</p>
+      <button class="login__button" type="submit" [disabled]="!loginForm.form.valid">Submit</button>
+    </fieldset>
+    <div class="error-message translate-in-right" *ngIf="authState == 1">
+      <h4 class="error-message__heading">Authorisation error: Incorrect username or password</h4>
+      <h5>Hint:</h5>
       <ul>
         <li>{{username}}</li>
         <li>{{password}}</li>

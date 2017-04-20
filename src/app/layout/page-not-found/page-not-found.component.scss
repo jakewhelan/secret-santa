@@ -1,3 +1,18 @@
+@import "~assets/scss/_common";
+
 :host {
   flex: 1;
+}
+
+.heading {
+  font-size: 48px;
+  line-height: 52px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.sub-heading {
+  font-family: $brand-font-secondary; 
+  text-align: center;
+  color: $brand-black--light;
 }

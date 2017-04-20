@@ -14,12 +14,12 @@ const routes: Routes = [
       {
         path: '', 
         component: LoginComponent,
-        data: { title: 'Admin Login | Secret Santa | Gilt Groupe' },
+        data: { title: 'Admin Login | Secret Santa | Gilt' },
       },
       {
         path: 'dashboard', 
         component: DashboardComponent,
-        data: { title: 'Admin Dashboard | Secret Santa | Gilt Groupe' },
+        data: { title: 'Admin Dashboard | Secret Santa | Gilt' },
       }
     ]
   }

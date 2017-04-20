@@ -15,7 +15,7 @@ const routes: Routes = [
   // 404 page not found
   { 
     path: '**', pathMatch: 'full', component: PageNotFoundComponent,
-    data: { title: '404 Page Not Found | Secret Santa | Gilt Groupe' } 
+    data: { title: '404 Page Not Found | Secret Santa | Gilt' } 
   }
 ];
 

@@ -1,14 +1,22 @@
-<div class="container">
-  <div *ngIf="user">
-    <h2>Welcome {{user.name.first}}</h2>
-    <div></div>
-    <div></div>
-    Your assignment is:
-    {{user.assignment.name.first}} {{user.assignment.name.last}}
+<div class="container translate-in-right">
+  <ng-container *ngIf="user">
+    <h2 class="heading">Welcome {{user.name.first}}</h2>
+    <h3 class="sub-heading">Your assignment is: {{user.assignment.name.first}} {{user.assignment.name.last}}</h3>
+    <div class="control__container">
+      <button class="control" (click)="logout()">Log Out</button>
+    </div>
+  </ng-container>
+  <h3 class="sub-heading">Why not get them a great gift from Gilt?</h3>
+  <div class="gifts">
+    <div *ngFor="let gift of gifts" class="gifts__item__container translate-in-right">
+      <div class="gifts__item">
+        <a class="gifts__item__link"[href]="gift.url">
+          <img class="gift__item__image" [src]="gift.image">
+          <p class="gifts__text gifts__text--small">{{gift.brand}}</p>
+          <p class="gifts__text">{{gift.name}}</p>
+          <p class="gifts__text gifts__text--price">{{gift.price}}</p>
+        </a>
+      </div>
+    </div>
   </div>
-  <div>
-    <h2>Why not get them a great gift from Gilt?</h2>
-    <div></div>
-  </div>
-  <span class="link" (click)="logout()">logout</span>
 </div>
